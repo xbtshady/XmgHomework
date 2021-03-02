@@ -21,7 +21,6 @@ import java.util.Enumeration;
 public class MyPageController implements PageController {
 
     @GET
-    @POST
     @Path("/world") // /hello/world -> HelloWorldController
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         System.out.println("execute");
@@ -29,7 +28,6 @@ public class MyPageController implements PageController {
     }
 
     @GET
-    @POST
     @Path("/goRegister")
     public String goRegister(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         System.out.println("goRegister");
@@ -37,7 +35,7 @@ public class MyPageController implements PageController {
     }
 
 
-    @GET
+
     @POST
     @Path("/registerSuccess")
     public String register(HttpServletRequest request, HttpServletResponse response) throws Throwable {
