@@ -23,7 +23,7 @@ public class DatabaseUserRepository implements UserRepository {
     /**
      * 通用处理方式
      */
-    private static Consumer<Throwable> COMMON_EXCEPTION_HANDLER = e -> logger.log(Level.SEVERE, e.getMessage());
+    private static Consumer<Throwable> COMMON_EXCEPTION_HANDLER = e -> logger.log(Level.SEVERE, e.fillInStackTrace().toString());
 
     public static final String INSERT_USER_DML_SQL =
             "INSERT INTO users(name,password,email,phoneNumber) VALUES " +
@@ -43,7 +43,7 @@ public class DatabaseUserRepository implements UserRepository {
 
     @Override
     public boolean save(User user) {
-        return executeQuery("insert into users (name,password,email,phoneNumber) values(?,?,?,?)",
+        return execute("insert into users (name,password,email,phoneNumber) values(?,?,?,?)",
                 resultSet -> {
                     return true;
                 }, COMMON_EXCEPTION_HANDLER,user.getName(),user.getPassword(),user.getEmail(),user.getPhoneNumber());
@@ -90,17 +90,6 @@ public class DatabaseUserRepository implements UserRepository {
                 }, COMMON_EXCEPTION_HANDLER, userName, password);
     }
 
-    public static void main(String[] args) throws Exception {
-        String databaseURL = "jdbc:derby:mydb;create=true";
-        Connection connection = DriverManager.getConnection(databaseURL);
-        DBConnectionManager dbConnectionManager = new DBConnectionManager();
-        dbConnectionManager.setConnection(connection);
-        DatabaseUserRepository db = new DatabaseUserRepository(dbConnectionManager);
-        User user = db.getByNameAndPassword("B","******");
-
-         System.out.println("ok");
-    }
-
     @Override
     public Collection<User> getAll() {
         return executeQuery("SELECT id,name,password,email,phoneNumber FROM users", resultSet -> {
@@ -138,9 +127,44 @@ public class DatabaseUserRepository implements UserRepository {
      * @param <T>
      * @return
      */
+    protected <T> T execute(String sql, ThrowableFunction<Boolean, T> function,
+                                 Consumer<Throwable> exceptionHandler, Object... args) {
+        Connection connection = dbConnectionManager.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for (int i = 0; i < args.length; i++) {
+                Object arg = args[i];
+                Class argType = arg.getClass();
+
+                Class wrapperType = wrapperToPrimitive(argType);
+
+                if (wrapperType == null) {
+                    wrapperType = argType;
+                }
+
+                // Boolean -> boolean
+                String methodName = preparedStatementMethodMappings.get(argType);
+                Method method = PreparedStatement.class.getMethod(methodName,int.class,wrapperType);
+                method.invoke(preparedStatement, i + 1, arg);
+            }
+            Boolean result = preparedStatement.execute();
+            // 返回一个 POJO List -> ResultSet -> POJO List
+            // ResultSet -> T
+            return function.apply(result);
+        } catch (Throwable e) {
+            exceptionHandler.accept(e);
+        }
+        return null;
+    }
+    /**
+     * @param sql
+     * @param function
+     * @param <T>
+     * @return
+     */
     protected <T> T executeQuery(String sql, ThrowableFunction<ResultSet, T> function,
                                  Consumer<Throwable> exceptionHandler, Object... args) {
-        Connection connection = getConnection();
+        Connection connection = dbConnectionManager.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             for (int i = 0; i < args.length; i++) {

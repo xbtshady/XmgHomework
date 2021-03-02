@@ -49,6 +49,8 @@ public class MyPageController implements PageController {
         User user = new User();
         user.setEmail(request.getParameter("email"));
         user.setPassword(request.getParameter("password"));
+        user.setName(request.getParameter("userName"));
+        user.setPhoneNumber(request.getParameter("phone"));
         db.save(user);
         return "registerSuccess.jsp";
     }

@@ -22,8 +22,12 @@
 	<div class="container">
 		<form class="form-signin" action="${ctx}/page/registerSuccess" method="post">
 			<h1 class="h3 mb-3 font-weight-normal">注册</h1>
-			<label for="inputEmail" class="sr-only">请输出电子邮件</label>
+			<label  class="sr-only">请输入用户名</label>
+			<input type="userName" name="userName" id="inputuserName" class="form-control" placeholder="请输入用户名" required autofocus>
+			<label for="inputEmail" class="sr-only">请输入电子邮件</label>
 			<input type="email" name="email" id="inputEmail" class="form-control" placeholder="请输入电子邮件" required autofocus>
+			<label class="sr-only">请输入手机号</label>
+			<input type="phone" name="phone" id="phone" class="form-control" placeholder="请输入手机号" required autofocus>
 			<label for="inputPassword" class="sr-only">Password</label>
 			<input type="password"  name="password" id="inputPassword" class="form-control" placeholder="请输入密码" required>
 			<button class="btn btn-lg btn-primary btn-block" type="submit">register</button>
