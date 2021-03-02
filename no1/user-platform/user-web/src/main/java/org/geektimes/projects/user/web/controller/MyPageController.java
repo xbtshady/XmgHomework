@@ -1,5 +1,6 @@
 package org.geektimes.projects.user.web.controller;
 
+import org.geektimes.projects.user.domain.User;
 import org.geektimes.projects.user.repository.DatabaseUserRepository;
 import org.geektimes.projects.user.sql.DBConnectionManager;
 import org.geektimes.web.mvc.controller.PageController;
@@ -45,12 +46,10 @@ public class MyPageController implements PageController {
         DBConnectionManager dbConnectionManager = new DBConnectionManager();
         dbConnectionManager.setConnection(connection);
         DatabaseUserRepository db = new DatabaseUserRepository(dbConnectionManager);
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        System.out.println(email);
-        System.out.println(password);
-
-
+        User user = new User();
+        user.setEmail(request.getParameter("email"));
+        user.setPassword(request.getParameter("password"));
+        db.save(user);
         return "registerSuccess.jsp";
     }
 }
