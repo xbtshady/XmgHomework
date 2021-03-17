@@ -34,14 +34,7 @@ public class TestingListener implements ServletContextListener {
         context.getComponentNames().forEach(logger::info);
         logger.info("]");
 
-        DefaultConfigProviderResolver defaultConfigProviderResolver = new DefaultConfigProviderResolver();
-        JavaConfig config = (JavaConfig)defaultConfigProviderResolver.getConfig();
-        logger.info("application.name " + config.getValue("application.name",String.class));
-        logger.info("myIntValue " + config.getValue("myIntValue",Integer.class));
-        logger.info("myBooleanValue " + config.getValue("myBooleanValue",Boolean.class));
-        logger.info("myFloatValue " + config.getValue("myFloatValue",Float.class));
-        logger.info("myLongValue " + config.getValue("myLongValue",Long.class));
-        logger.info("myDoubleValue " + config.getValue("myDoubleValue",Double.class));
+
     }
 
     private void testPropertyFromServletContext(ServletContext servletContext) {

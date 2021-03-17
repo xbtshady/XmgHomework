@@ -20,7 +20,7 @@
               maxActive="100" maxIdle="30" maxWait="10000"
               username="root" password="xw@mysql2020"
               driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://127.0.0.1:3357/test"/>
+              url="jdbc:mysql://47.93.238.228:3357/test"/>
 
 	<!-- FactoryBean -->
 	<Resource name="bean/DBConnectionManager" auth="Container"
