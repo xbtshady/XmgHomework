@@ -54,7 +54,7 @@ myDoubleValue=4.0
 
 ## 扩展 org.eclipse.microprofile.config.spi.Converter 实现，提供 String 类型到简单类型
 
-实现的类有[代码链接](https://github.com/xbtshady/XmgHomework/tree/main/no3/user-platform/user-web/src/main/java/org/geektimes/configuration/microprofile/config/source)
+实现的类有[代码链接](https://github.com/xbtshady/XmgHomework/tree/main/no3/user-platform/user-web/src/main/java/org/geektimes/configuration/microprofile/config/converter)
 
 - ConverterBoolean
 - ConverterDouble
