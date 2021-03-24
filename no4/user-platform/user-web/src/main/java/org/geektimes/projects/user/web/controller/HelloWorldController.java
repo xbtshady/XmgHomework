@@ -2,6 +2,9 @@ package org.geektimes.projects.user.web.controller;
 
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
+import org.geektimes.context.ClassicComponentContext;
+import org.geektimes.context.ComponentContext;
+import org.geektimes.projects.user.sql.DBConnectionManager;
 import org.geektimes.web.mvc.controller.PageController;
 
 import javax.servlet.ServletContext;
@@ -28,6 +31,10 @@ public class HelloWorldController implements PageController {
 
         System.out.println("---------- app.name = " + config.getValue("app.name", String.class));
         System.out.println("---------- app.version = " + config.getValue("app.version", Double.class));
+
+        ClassicComponentContext context = ClassicComponentContext.getInstance();
+        DBConnectionManager dbConnectionManager = context.getComponent("bean/DBConnectionManager");
+        dbConnectionManager.getEntityManager();
         return "index.jsp";
     }
 }
