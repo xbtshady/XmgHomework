@@ -1,0 +1,11 @@
+server:
+  port: 1111 # 如果使用随机可用端口 0 的话，请注意 Eureka 无法识别
+
+#spring:
+#  application:
+#    name: config-server
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: file://${user.dir}/SpringCloudProjectsConfigServer/src/main/resources/config-repo

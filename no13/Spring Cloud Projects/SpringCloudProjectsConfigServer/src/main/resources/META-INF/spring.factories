@@ -1,0 +1,2 @@
+org.springframework.cloud.bootstrap.BootstrapConfiguration=\
+com.xw.projects.spring.cloud.config.server.MyConfigBootstrapConfiguration
